@@ -55,25 +55,25 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
-    def destroy_instance(self, argument):
+    def do_destroy(self, arg):
         """
-        Delete and save changes
+        removes and destroys an entry
         """
-        arguments = shlex.split(argument)
-        if len(arguments) == 0:
+        tokens = shlex.split(arg)
+        if len(tokens) == 0:
             print("** class name missing **")
             return
-        if arguments[0] not in HBNBCommand.my_dict.keys():
+        if tokens[0] not in HBNBCommand.my_dict.keys():
             print("** class doesn't exist **")
             return
-        if len(arguments) <= 1:
+        if len(tokens) <= 1:
             print("** instance id missing **")
             return
         storage.reload()
-        objects_dict = storage.all()
-        key = arguments[0] + "." + arguments[1]
-        if key in objects_dict:
-            del objects_dict[key]
+        objs_dict = storage.all()
+        key = tokens[0] + "." + tokens[1]
+        if key in objs_dict:
+            del objs_dict[key]
             storage.save()
         else:
             print("** no instance found **")
