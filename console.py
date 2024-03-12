@@ -13,3 +13,35 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.city import City
+
+class HBNBCommand(cmd.Cmd):
+    """ prompt to access Airbnb """
+    prompt = '(hbnb)'
+    index = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "Review": Review
+            }
+    def do_nothing(self, arg):
+        """nothing"""
+        pass
+
+    def do_emptyline(self):
+    """skips the empty line function"""
+    pass 
+
+    def do_quit(self, arg):
+        return True
+
+    def do_EOF(self,arg):
+        print("")
+        return True
+   
+
+
+
+
