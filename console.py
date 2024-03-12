@@ -17,7 +17,7 @@ from models.city import City
 class HBNBCommand(cmd.Cmd):
     """ prompt to access Airbnb """
     prompt = '(hbnb)'
-    index = {
+    my_dict = {
             "BaseModel": BaseModel,
             "User": User,
             "State": State,
