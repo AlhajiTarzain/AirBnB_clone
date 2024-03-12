@@ -31,8 +31,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_emptyline(self):
-    """skips the empty line function"""
-    pass 
+        """skips the empty line function"""
+        pass 
 
     def do_quit(self, arg):
         return True
@@ -40,8 +40,46 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self,arg):
         print("")
         return True
-   
 
+    def do_create(self, arg):
+        """Creates new instance of the class
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+        my_data = shlex.split(arg)
+        if my_data[0] not in HBNBCommand.index.keys():
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.index[my_data[0]]()
+        new_instance.save()
+        print(new_instance.id)
+
+    def destroy_instance(self, argument):
+        """
+        Delete and save changes
+        """
+        arguments = shlex.split(argument)
+        if len(arguments) == 0:
+            print("** class name missing **")
+            return
+        if arguments[0] not in HBNBCommand.my_dict.keys():
+            print("** class doesn't exist **")
+            return
+        if len(arguments) <= 1:
+            print("** instance id missing **")
+            return
+        storage.reload()
+        objects_dict = storage.all()
+        key = arguments[0] + "." + arguments[1]
+        if key in objects_dict:
+            del objects_dict[key]
+            storage.save()
+        else:
+            print("** no instance found **")
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
 
 
 
