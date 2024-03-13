@@ -65,13 +65,13 @@ class HBNBCommand(cmd.Cmd):
         """
         token = shlex.split(arg)
         if len(token) == 0:
-            print("** name missing **")
+            print("** class name missing **")
             return
         if token[0] not in HBNBCommand.my_dict.keys():
-            print("** doesn't exist **")
+            print("**class doesn't exist **")
             return
         if len(token) <= 1:
-            print("** id missing **")
+            print("** instance id missing **")
             return
         storage.reload()
         objs_dict = storage.all()
@@ -82,6 +82,33 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name
+        and id (save the change into the JSON file)
+        """
+        tokens = shlex.split(arg)
+        if not tokens:
+                print("** class name missing **")
+                return
+
+        class_name = tokens[0]
+        if class_name not in HBNBCommand.my_dict:
+            print("** class doesn't exist **")
+            return
+
+        if len(tokens) <= 1:
+            print("** instance id missing **")
+            return
+
+        storage.reload()
+        objs_dict = storage.all()
+        key = f"{class_name}.{tokens[1]}"
+        if key in objs_dict:
+            del objs_dict[key]
+            storage.save()
+        else:
+                print("** no instance found **")
 
 
 
