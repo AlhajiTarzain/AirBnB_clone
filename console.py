@@ -169,6 +169,17 @@ class HBNBCommand(cmd.Cmd):
         else:
             setattr(event, inputs[2], inputs[3])
         storage.save()
+    
+    def do_count(self, arg):
+        """
+        Counts
+        """
+        counter = 0
+        obj = storage.all()
+        for i in obj:
+            if (arg in i):
+                counter += 1
+        print(counter)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
