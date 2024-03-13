@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:  # No class name provided, print all instances
             for obj in objects_dict.values():
                 my_json.append(str(obj))
-            else:
+        else:
                 token = shlex.split(arg)
                 class_name = token[0]
 
