@@ -17,7 +17,7 @@ from models.amenity import Amenity
 
 class HBNBCommand(cmd.Cmd):
     """ prompt fo air bnb app """
-    prompt = '(Zainbnb) '
+    prompt = '(hbnb)'
     my_dict = {
         "BaseModel": BaseModel,
         "User": User,
@@ -87,4 +87,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
