@@ -1,85 +1,90 @@
 #!/usr/bin/python3
 """
-interactive console for my airbnb 
+Import files
 """
 import cmd
 from models.base_model import BaseModel
 from models import storage
-import shlex
-import json
 from models.user import User
 from models.state import State
-from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+import json
+import shlex
 from models.city import City
+from models.amenity import Amenity
+
 
 class HBNBCommand(cmd.Cmd):
-    """ prompt to access Airbnb """
-    prompt = '(hbnb)'
+    """ prompt fo air bnb app """
+    prompt = '(Zainbnb) '
     my_dict = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "State": State,
-            "City": City,
-            "Amenity": Amenity,
-            "Place": Place,
-            "Review": Review
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
             }
+
     def do_nothing(self, arg):
-        """nothing"""
+        """ nothing """
         pass
 
-    def do_emptyline(self):
-        """skips the empty line function"""
-        pass 
-
     def do_quit(self, arg):
+        """ Close save data """
         return True
 
-    def do_EOF(self,arg):
+    def do_EOF(self, arg):
+        """ Close program     """
         print("")
         return True
 
+    def emptyline(self):
+        pass
+
     def do_create(self, arg):
-        """Creates new instance of the class
+        """ Creates a new instance of the basemodel class
+        Structure: create [class name]
         """
         if not arg:
             print("** class name missing **")
             return
         my_data = shlex.split(arg)
-        if my_data[0] not in HBNBCommand.index.keys():
-            print("** class doesn't exist **")
+        if my_data[0] not in HBNBCommand.my_dict.keys():
+            print("** doesn't exist **")
             return
-        new_instance = HBNBCommand.index[my_data[0]]()
-        new_instance.save()
-        print(new_instance.id)
+        entry = HBNBCommand.my_dict[my_data[0]]()
+        entry.save()
+        print(entry.id)
 
-    def do_destroy(self, arg):
+    def do_show(self, arg):
         """
-        removes and destroys an entry
+        Shows an entry
         """
-        tokens = shlex.split(arg)
-        if len(tokens) == 0:
-            print("** class name missing **")
+        token = shlex.split(arg)
+        if len(token) == 0:
+            print("** name missing **")
             return
-        if tokens[0] not in HBNBCommand.my_dict.keys():
-            print("** class doesn't exist **")
+        if token[0] not in HBNBCommand.my_dict.keys():
+            print("** doesn't exist **")
             return
-        if len(tokens) <= 1:
-            print("** instance id missing **")
+        if len(token) <= 1:
+            print("** id missing **")
             return
         storage.reload()
         objs_dict = storage.all()
-        key = tokens[0] + "." + tokens[1]
-        if key in objs_dict:
-            del objs_dict[key]
-            storage.save()
+        safoa = token[0] + "." + token[1]
+        if safoa in objs_dict:
+            obj_instance = str(objs_dict[safoa])
+            print(obj_instance)
         else:
             print("** no instance found **")
 
+
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-
 
