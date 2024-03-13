@@ -181,5 +181,45 @@ class HBNBCommand(cmd.Cmd):
                 counter += 1
         print(counter)
 
+    def default(self, arg):
+        """ data new yas"""
+        val_dict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+            "count": self.do_count
+           
+        }
+        arg = arg.strip()
+        values = arg.split(".")
+        if len(values) != 2:
+            cmd.Cmd.default(self, arg)
+            return
+        class_name = values[0]
+        to_do = values[1].split("(")[0]
+        argss = ""
+        if (to_do == "update" and values[1].split("(")[1][-2] == "}"):
+            puttin = values[1].split("(")[1].split(",", 1)
+            puttin[0] = shlex.split(puttin[0])[0]
+            argss = "".join(puttin)[0:-1]
+            argss = class_name + " " + argss
+            self.do_update2(argss.strip())
+            return
+        try:
+            puttin = values[1].split("(")[1].split(",")
+            for num in range(len(puttin)):
+                if (num != len(puttin) - 1):
+                    argss = argss + " " + shlex.split(puttin[num])[0]
+                else:
+                    argss = argss + " " + shlex.split(puttin[num][0:-1])[0]
+        except IndexError:
+            puttin = ""
+            argss = ""
+        argss = class_name + argss
+        if (to_do in val_dict.keys()):
+            val_dict[to_do](argss.strip())
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
