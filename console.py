@@ -133,5 +133,42 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and
+        id 
+        """
+        if not arg:
+            print("** class name missing **")
+            return
+        inputs = shlex.split(arg)
+        storage.reload()
+        objs_dict = storage.all()
+        if inputs[0] not in HBNBCommand.my_dict.keys():
+            print("** class doesn't exist **")
+            return
+        if (len(inputs) == 1):
+            print("** instance id missing **")
+            return
+        try:
+            i = inputs[0] + "." + inputs[1]
+            objs_dict[i]
+        except KeyError:
+            print("** no instance found **")
+            return
+        if (len(inputs) == 2):
+            print("** attribute name missing **")
+            return
+        if (len(inputs) == 3):
+            print("** value missing **")
+            return
+        event = objs_dict[i]
+        if hasattr(event, inputs[2]):
+            data_type = type(getattr(event, inputs[2]))
+            setattr(event, inputs[2], data_type(inputs[3]))
+        else:
+            setattr(event, inputs[2], inputs[3])
+        storage.save()
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
