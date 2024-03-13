@@ -111,34 +111,27 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, arg):
-    """
-    Prints string representation of all instances
-    based or not on the class name
-    Structure: all [class name] or all
-    """
-    # Reload storage to ensure latest data
-    storage.reload()
-    
-    objects_dict = storage.all()
-    my_json = []
-
-    if not arg:  # No class name provided, print all instances
-        for obj in objects_dict.values():
-            my_json.append(str(obj))
-    else:
-        token = shlex.split(arg)
-        class_name = token[0]
-        
-        if class_name not in HBNBCommand.my_dict:
-            print("** class doesn't exist **")
+        """
+        Prints all string representation of all instances
+        based or not on the class name
+        """
+        #show everthtinh
+        storage.reload()
+        my_json = []
+        objects_dict = storage.all()
+        if not arg:
+            for i in objects_dict:
+                my_json.append(str(objects_dict[i]))
+            print(json.dumps(my_json))
             return
-        
-        for key, obj in objects_dict.items():
-            if class_name in key:
-                my_json.append(str(obj))
-
-    print(json.dumps(my_json))
-
+        token = shlex.split(arg)
+        if token[0] in HBNBCommand.my_dict.keys():
+            for key in objects_dict:
+                if token[0] in i:
+                    my_json.append(str(objects_dict[i]))
+            print(json.dumps(my_json))
+        else:
+            print("** class doesn't exist **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
